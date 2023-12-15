@@ -1,4 +1,4 @@
-# SOFA_physics_model_based_on_Deep_Learning
+# Liver_physics_model_based_on_Deep_Learning_and_SOFA
 
 This is a code repository for training deep learning neural networks using the SOFA environment. The repository is divided into three parts:
 1. SOFA environment model with appropriate material properties, -
