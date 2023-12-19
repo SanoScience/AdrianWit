@@ -1,0 +1,115 @@
+	<?xml version="1.0" ?>
+<!-------- gravity="0 -9.81 0" --------------->
+
+<Node name="root" gravity="0 -15.81 0" dt="0.02">
+
+	<RequiredPlugin name="Sofa.Component.Collision.Detection.Algorithm"/> <!-- Needed to use components [BVHNarrowPhase,BruteForceBroadPhase,CollisionPipeline] -->
+	<RequiredPlugin name="Sofa.Component.Collision.Detection.Intersection"/> <!-- Needed to use components [MinProximityIntersection] -->
+	<RequiredPlugin name="Sofa.Component.Collision.Geometry"/> <!-- Needed to use components [TriangleCollisionModel] -->
+	<RequiredPlugin name="Sofa.Component.Collision.Response.Contact"/> <!-- Needed to use components [DefaultContactManager] -->
+	<RequiredPlugin name="Sofa.Component.Constraint.Projective"/> <!-- Needed to use components [FixedConstraint] -->
+	<RequiredPlugin name="Sofa.Component.IO.Mesh"/> <!-- Needed to use components [MeshGmshLoader,MeshOBJLoader] -->
+	<RequiredPlugin name="Sofa.Component.LinearSolver.Iterative"/> <!-- Needed to use components [CGLinearSolver] -->
+	<RequiredPlugin name="Sofa.Component.Mapping.Linear"/> <!-- Needed to use components [BarycentricMapping] -->
+	<RequiredPlugin name="Sofa.Component.Mass"/> <!-- Needed to use components [MeshMatrixMass] -->
+	<RequiredPlugin name="Sofa.Component.MechanicalLoad"/> <!-- Needed to use components [ConstantForceField] -->
+	<RequiredPlugin name="Sofa.Component.ODESolver.Backward"/> <!-- Needed to use components [EulerImplicitSolver] -->
+	<RequiredPlugin name="Sofa.Component.SolidMechanics.FEM.Elastic"/> <!-- Needed to use components [TetrahedronFEMForceField] -->
+	<RequiredPlugin name="Sofa.Component.StateContainer"/> <!-- Needed to use components [MechanicalObject] -->
+	<RequiredPlugin name="Sofa.Component.Topology.Container.Constant"/> <!-- Needed to use components [MeshTopology] -->
+	<RequiredPlugin name="Sofa.Component.Topology.Container.Dynamic"/> <!-- Needed to use components [TetrahedronSetGeometryAlgorithms,TetrahedronSetTopologyContainer] -->
+	<RequiredPlugin name="Sofa.Component.Visual"/> <!-- Needed to use components [VisualStyle] -->
+	<RequiredPlugin name="Sofa.GL.Component.Rendering3D"/> <!-- Needed to use components [OglModel] -->
+	<RequiredPlugin name="Sofa.Component.SolidMechanics.FEM.HyperElastic"/> <!-- Needed to use components [TetrahedronHyperelasticityFEMForceField] -->
+	
+	<DefaultAnimationLoop/>
+	<DefaultVisualManagerLoop/>
+	
+	<CollisionPipeline verbose="0" depth="10" draw="0" />
+    <BruteForceBroadPhase/>
+    <BVHNarrowPhase/>
+    <MinProximityIntersection name="Proximity" alarmDistance="0.5" contactDistance="0.2" />
+    <DefaultContactManager name="Response" response="PenalityContactForceField" />
+	
+	<MeshGmshLoader name="mesh_Liver" filename="mesh/liver.msh" />
+	<MeshOBJLoader name="mesh_Liver_fine" filename="mesh/liver-smooth.obj" />
+	<MeshOBJLoader name='Loader-floor' filename='mesh/floor2.obj'/>
+
+    <Node name="Liver_HyperElastic">
+
+		<EulerImplicitSolver name="EulerImplicit"  rayleighStiffness="0.1" rayleighMass="0.1" />
+		<CGLinearSolver name="CG Solver" iterations="20" tolerance="1.0e-9" threshold="1.0e-9"/>
+        <TetrahedronSetTopologyContainer name="topo" src="@../mesh_Liver" />
+		<TetrahedronSetGeometryAlgorithms template="Vec3" name="GeomAlgo" drawTetrahedra ="0" />
+		
+		<MechanicalObject name="Liver_DOFs" src="@../mesh_Liver" dx="-18"/>
+		
+		<TetrahedronHyperelasticityFEMForceField name="HyperElasticMaterial" materialName="StVenantKirchhoff" ParameterSet="5000 3100"/>
+		<MeshMatrixMass massDensity="5" />
+		
+		<VisualStyle name="Vis_setting" displayFlags="showVisual"/>                                                     <!--showCollisionModels-->
+		<Node name="Visu" tags="Visual">	
+				<OglModel name="Visual_model" src="@../../mesh_Liver_fine" dx="-18" />
+				<BarycentricMapping name="visual mapping" input="@../Liver_DOFs" output="@Visual_model" />
+				
+		</Node >
+		<Node name="Collisions">
+				<MeshTopology name="mesh_collision_fine" src="@../../mesh_Liver_fine" />
+				<MechanicalObject name="Store_Forces" scale="1.0" dx="-18"/>
+				<TriangleCollisionModel contactStiffness="3" selfCollision="0" />
+				<LineCollisionModel />
+				<PointCollisionModel />	
+				<BarycentricMapping name="CollisionMapping" input="@../Liver_DOFs" output="@Store_Forces" />	
+		</Node >
+    </Node> <!-- END -->
+	
+    <Node name="Floor_2">
+        <MeshTopology src="@../Loader-floor" />
+        <MechanicalObject src="@../Loader-floor" dx="-20" scale="0.1" />
+        <TriangleCollisionModel name="FloorTriangleModel" simulated="0" moving="0" />
+        <LineCollisionModel name="FloorLineModel" simulated="0" moving="0" />
+        <PointCollisionModel name="FloorPointModel" simulated="0" moving="0" />
+		
+		<VisualStyle name="Vis_setting" displayFlags="showVisual"/>
+        <OglModel name="FloorV" src="@../../Loader-floor" scale="0.1" dx="-20" dy="0" color="0 1 0"/>
+    </Node>
+	
+	<Node name="Liver_Elastic_mass">
+
+		<EulerImplicitSolver name="EulerImplicit"  rayleighStiffness="0.1" rayleighMass="0.1" />
+		<CGLinearSolver name="CG Solver" iterations="20" tolerance="1.0e-9" threshold="1.0e-9"/>
+        <TetrahedronSetTopologyContainer name="topo" src="@../mesh_Liver" />
+		<MechanicalObject name="Liver_DOFs" src="@../mesh_Liver" />
+		<TetrahedronSetGeometryAlgorithms template="Vec3" name="GeomAlgo" drawTetrahedra ="0" />
+		
+		<TetrahedronFEMForceField template="Vec3" name="FEM" youngModulus="800" poissonRatio="0.3"/>
+		<MeshMatrixMass massDensity="1" />
+		
+		<VisualStyle name="Vis_setting" displayFlags="showVisual"/>
+		<Node name="Visu" tags="Visual">
+				<OglModel name="Visual_model" src="@../../mesh_Liver_fine" />
+				<BarycentricMapping name="visual mapping" input="@../Liver_DOFs" output="@Visual_model" />
+				
+		</Node >
+		<Node name="Collisions">
+				<MeshTopology name="mesh_collision_fine" src="@../../mesh_Liver_fine" />
+				<MechanicalObject name="Store_Forces" scale="1.0" />
+				<TriangleCollisionModel contactStiffness="3" selfCollision="0" />
+				<LineCollisionModel />
+				<PointCollisionModel />	
+				<BarycentricMapping name="CollisionMapping" input="@../Liver_DOFs" output="@Store_Forces" />	
+		</Node >
+    </Node>
+	
+    <Node name="Floor_1">
+        <MeshTopology src="@../Loader-floor" />
+        <MechanicalObject src="@../Loader-floor" dx="-2" scale="0.1" />
+        <TriangleCollisionModel name="FloorTriangleModel" simulated="0" moving="0" />
+        <LineCollisionModel name="FloorLineModel" simulated="0" moving="0" />
+        <PointCollisionModel name="FloorPointModel" simulated="0" moving="0" />
+		
+		<VisualStyle name="Vis_setting" displayFlags="showVisual"/>
+        <OglModel name="FloorV" src="@../../Loader-floor" scale="0.1" dx="-2" color="0 1 0"/>
+    </Node> <!-- END -->
+	
+</Node>
