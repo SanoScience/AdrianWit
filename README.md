@@ -7,3 +7,6 @@ This is a code repository for training deep learning neural networks in physics 
 2. Python code for generating data (batches) based on node displacement in SOFA simulations.
 3. A neural network design for learning and predicting strain.
 4. Visualization of model strain driven by the neural network.
+
+Minimal workloop:
+MAIN_Generate_scenarios.py --> PyTorch_learning.py --> network_PyTorch.pkl --> Liver_on_pygames.py
