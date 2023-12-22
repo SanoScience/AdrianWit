@@ -2,12 +2,12 @@ import numpy as np
 import vtk
 
 def load_init_positions():
-    file_path = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Mesh/liver2.npz'
+    file_path = 'C:/...../Mesh/liver2.npz'
     liver2_data = np.load(file_path)
     return liver2_data['node']
 
 def load_init_elements():
-    file_path = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Mesh/liver2.npz'
+    file_path = 'C:/......../Mesh/liver2.npz'
     liver2_data = np.load(file_path)
     return liver2_data['elem']
 

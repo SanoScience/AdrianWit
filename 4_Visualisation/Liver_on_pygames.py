@@ -4,17 +4,17 @@ import math
 
 
 def load_init_positions():
-    file_path = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Mesh/liver2.npz'
+    file_path = 'C:/....../Mesh/liver2.npz'
     liver2_node = np.load(file_path)
     return liver2_node['node']
 
 def load_init_elements():
-    file_path = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Mesh/liver2.npz'
+    file_path = 'C:/...../Mesh/liver2.npz'
     liver2_elem = np.load(file_path)
     return liver2_elem['elem']
 
 def load_fixed_nodes():
-    file_path = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Resulats_sim/BC_Boundary/Nodes_Fix_nr.txt'
+    file_path = 'C:/......./Resulats_sim/BC_Boundary/Nodes_Fix_nr.txt'
     return np.loadtxt(file_path, dtype=int)
 
 def draw_elements(screen, positions, elements, zoom_factor, offset, screen_height):

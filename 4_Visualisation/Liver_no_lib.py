@@ -8,19 +8,19 @@ scatter = None  # Global variable for scatter plot
 
 
 def load_init_positions():
-    file_path = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Mesh/liver2.npz'
+    file_path = 'C:/Users/...../Mesh/liver2.npz'
     liver2_data = np.load(file_path)
     return liver2_data['node']
 
 
 def load_init_elements():
-    file_path = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Mesh/liver2.npz'
+    file_path = 'C:/Users/......../Mesh/liver2.npz'
     liver2_data = np.load(file_path)
     return liver2_data['elem']
 
 
 def load_fixed_nodes():
-    file_path = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Resulats_sim/BC_Boundary/Nodes_Fix_nr.txt'
+    file_path = 'C:/Users/......./Resulats_sim/BC_Boundary/Nodes_Fix_nr.txt'
     return np.loadtxt(file_path, dtype=int)
 
 

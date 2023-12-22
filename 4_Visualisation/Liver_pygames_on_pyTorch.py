@@ -24,7 +24,7 @@ class Net(nn.Module):
 
 # Wczytywanie modelu
 net = Net()
-net.load_state_dict(torch.load('C:/Users/Sharkoon/Documents/SOFA_Python_Project/NN/network_PyTorch.pkl'))
+net.load_state_dict(torch.load('C:/Users/..../network_PyTorch.pkl'))
 net.eval()
 
 #######################################################################################################
@@ -32,17 +32,17 @@ net.eval()
 #######################################################################################################
 
 def load_init_positions():
-    file_path = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Mesh/liver2.npz'
+    file_path = 'C:/Users/........./Mesh/liver2.npz'
     liver2_node = np.load(file_path)
     return liver2_node['node']
 
 def load_init_elements():
-    file_path = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Mesh/liver2.npz'
+    file_path = 'C:/Users/........./Mesh/liver2.npz'
     liver2_elem = np.load(file_path)
     return liver2_elem['elem']
 
 def load_fixed_nodes():
-    file_path = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Resulats_sim/BC_Boundary/Nodes_Fix_nr.txt'
+    file_path = 'C:/Users/......./Resulats_sim/BC_Boundary/Nodes_Fix_nr.txt'
     return np.loadtxt(file_path, dtype=int)
 
 def draw_elements(screen, positions, elements, zoom_factor, offset, screen_height):
