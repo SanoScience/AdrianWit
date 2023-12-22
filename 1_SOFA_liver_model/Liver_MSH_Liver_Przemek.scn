@@ -36,7 +36,7 @@
 	<!----------------------------------->
 	
 	<DefaultAnimationLoop/>
-	<MeshGmshLoader name="mesh_Liver" filename="C:/Users/Sharkoon/Dropbox/SANO/Meshes/Liver_Przemek.msh" />
+	<MeshGmshLoader name="mesh_Liver" filename="C:/...../Meshes/Liver_Przemek.msh" />
 
 	<!---------- Collisions solver -------------->
 	<CollisionPipeline name="CollisionPipeline" verbose="0" draw="0" />

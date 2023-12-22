@@ -34,14 +34,14 @@ optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
 #######################################################################################################
 
 print('Read batches:')
-config_file_path = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/SOFA_gene_config.txt'
+config_file_path = 'C:/Users/..../SOFA_Python_Project/SOFA_gene_config.txt'
 with open(config_file_path, 'r') as file:
     lines = file.readlines()
 
 scenarios_nr = int(lines[0].split('=')[1].strip())
 iterations_nr = int(lines[1].split('=')[1].strip())
-path_to_position_files = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Resulats_sim/position/'
-path_to_forces_files = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Resulats_sim/forces/'
+path_to_position_files = 'C:/Users/...../SOFA_Python_Project/Resulats_sim/position/'
+path_to_forces_files = 'C:/Users/..../SOFA_Python_Project/Resulats_sim/forces/'
 
 batch_num = scenarios_nr * iterations_nr
 print(batch_num)

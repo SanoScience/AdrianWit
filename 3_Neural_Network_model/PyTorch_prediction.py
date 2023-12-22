@@ -34,3 +34,7 @@ net.load_state_dict(torch.load('network_PyTorch.pkl'))
 net.eval()
 
 
+    with torch.no_grad():
+        new_positions = net(input_tensor).numpy()
+
+

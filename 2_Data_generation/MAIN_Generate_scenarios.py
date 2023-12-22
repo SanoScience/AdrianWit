@@ -7,12 +7,12 @@ import copy
 
 # Choose in your script to activate or not the GUI
 USE_GUI = False      # True # False
-scenarios_range = 500
-iter_nr = 20
+scenarios_range = 1
+iter_nr = 1
 Fixed_Constraint = [406, 409, 410, 413, 329, 349, 348, 352, 353]
 
 # Save config file
-config_file_path = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/SOFA_gene_config.txt'
+config_file_path = 'C:/Users/..../SOFA_Python_Project/SOFA_gene_config.txt'
 with open(config_file_path, 'w') as file:
     file.write(f"scenarios_nr = {scenarios_range} \niter_nr = {iter_nr}")
 
@@ -25,7 +25,7 @@ def clear_folder(folder_path):
                 os.remove(file_path)
 
 # Clear the folder at the beginning of the script if not empty
-folder_path_pos = 'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Resulats_sim/position/'
+folder_path_pos = 'C:/Users/..../SOFA_Python_Project/Resulats_sim/position/'
 clear_folder(folder_path_pos)
 
 
@@ -65,28 +65,28 @@ def main():
 
         # Save gravity vector
         # gravity_vector = np.array([gravity_x, gravity_y, gravity_z])
-        # gravity_file_path = f"C:/Users/Sharkoon/Documents/SOFA_Python_Project/Resulats_sim/gravity/g_{i}.txt"
+        # gravity_file_path = f"C:/Users/....../SOFA_Python_Project/Resulats_sim/gravity/g_{i}.txt"
         # np.savetxt(gravity_file_path, gravity_vector, fmt='%.2f')
 
         random_node = random.randint(0, 544)
-        random_force1 = round(random.uniform(-10, 10), 3)
-        random_force2 = round(random.uniform(-10, 10), 3)
-        random_force3 = round(random.uniform(-10, 10), 3)
+        random_force_x = round(random.uniform(-10, 10), 3)
+        random_force_y = round(random.uniform(-10, 10), 3)
+        random_force_z = round(random.uniform(-10, 10), 3)
 
         # Save forces info
-        output_path_force = f'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Resulats_sim/forces/f_{scenario_nr}.txt'
+        output_path_force = f'C:/Users/...../SOFA_Python_Project/Resulats_sim/forces/f_{scenario_nr}.txt'
         # Create a structured array with different data types
         force_data = np.array(
-            [(random_node, random_force1, random_force2, random_force3)],
+            [(random_node, random_force_x, random_force_y, random_force_z)],
             dtype=[('node', 'i'), ('force1', 'f8'), ('force2', 'f8'), ('force3', 'f8')]
         )
         np.savetxt(output_path_force, force_data, delimiter='\t', fmt=['%i', '%.8f', '%.8f', '%.8f'])
 
-        createScene(root, gravity_x, gravity_y, gravity_z, 0.01, random_node, random_force1, random_force2, random_force3)
+        createScene(root, gravity_x, gravity_y, gravity_z, 0.01, random_node, random_force_x, random_force_y, random_force_z)
         Sofa.Simulation.init(root)
 
         # SAVE BC to FILES
-        output_path_BC_nodes = f'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Resulats_sim/BC_Boundary/Nodes_Fix_nr.txt'
+        output_path_BC_nodes = f'C:/Users/....../SOFA_Python_Project/Resulats_sim/BC_Boundary/Nodes_Fix_nr.txt'
         # check if file still exist
         if os.path.exists("output_path_BC_nodes"):
             os.remove("output_path_BC_nodes")
@@ -111,7 +111,7 @@ def main():
 
             # Save results to file
             position_iter = f'{scenario_nr}_{iteration}'
-            output_path_position = f'C:/Users/Sharkoon/Documents/SOFA_Python_Project/Resulats_sim/position/{position_iter}.txt'
+            output_path_position = f'C:/Users/....../SOFA_Python_Project/Resulats_sim/position/{position_iter}.txt'
             # Format and save to file
             np.savetxt(output_path_position, inp_out_pos, delimiter='\t', fmt='%.8f')
 
@@ -132,7 +132,7 @@ def main():
         root = None  # This should clear the root node and prepare for the next iteration
 
 
-def createScene(root, gravity_x, gravity_y, gravity_z, dt, random_node, random_force1, random_force2, random_force3):
+def createScene(root, gravity_x, gravity_y, gravity_z, dt, random_node, random_force_x, random_force_y, random_force_z):
 
     root.gravity = [gravity_x, gravity_y, gravity_z]
     dt = 0.02 if dt is None else dt
@@ -148,7 +148,7 @@ def createScene(root, gravity_x, gravity_y, gravity_z, dt, random_node, random_f
     root.addObject('DefaultContactManager', name="Response", response='PenalityContactForceField')
 
     # Load mesh file
-    root.addObject('MeshGmshLoader', name="Liver_Przemek", filename="C:/Users/Sharkoon/Dropbox/SANO/Meshes/Liver_Przemek.msh")
+    root.addObject('MeshGmshLoader', name="Liver_Przemek", filename="C:/...../Meshes/Liver_Przemek.msh")
 
     # Add LIVER child node
     liver = root.addChild('liver')
@@ -163,7 +163,7 @@ def createScene(root, gravity_x, gravity_y, gravity_z, dt, random_node, random_f
     liver.addObject('MeshMatrixMass', massDensity=1)
 
     # Add Nodal Force Field !!!
-    liver.addObject('ConstantForceField', indices=random_node, forces=[random_force1, random_force2, random_force3])
+    liver.addObject('ConstantForceField', indices=random_node, forces=[random_force_x, random_force_y, random_force_z])
 
     # Add Fixed_Constraint !!!
     liver.addObject('FixedConstraint', indices=Fixed_Constraint)
